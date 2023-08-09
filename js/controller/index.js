@@ -76,7 +76,7 @@ domId("btnThemNguoiDung").onclick =  () => {
 			listPerson.addCustomer(customer);
 			// console.log(customer);
 		}
-		// console.log(listPerson);
+		// setLocalStorage();
 		renderTable();
 		resetInput();
 		close();
@@ -131,8 +131,31 @@ const renderTable = () => {
 
 window.deletePerson = (id) => {
 	listPerson.delete(id);
+	// setLocalStorage();
 	renderTable();
 }
+
+const setLocalStorage = () => {
+	const stringify = JSON.stringify(listPerson.listPerson);
+
+	localStorage.setItem("PERSON_LIST_KEY", stringify);
+};
+
+const getLocalStorage = () => {
+	const stringify = localStorage.getItem("PERSON_LIST_KEY");
+
+	if (stringify) {
+		listPerson.listPerson = JSON.parse(stringify);
+	}
+};
+
+// window.onload = () => {
+// 	// running
+// 	getLocalStorage();
+// 	renderTable();
+// };
+
+// RESET INPUT AND CLOSE POPUP==========================================================
 
 const resetInput = () => {
 	domId("name").value = "";
