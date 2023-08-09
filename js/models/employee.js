@@ -1,13 +1,13 @@
-import { Person } from "./person";
+import { Person } from "./person.js";
 
 export class Employee extends Person {
-    constructor(name, address, id, email, soNgay, luongNgay) {
-        super(name, address, id, email);
+    constructor(name, address, id, email, type, soNgay, luongNgay) {
+        super(name, address, id, email, type);
         this.soNgay = soNgay;
         this.luongNgay = luongNgay;
     }
     tinhLuong () {
-        return (soNgay * luongNgay);
+        return (parseFloat(this.soNgay) * parseFloat(this.luongNgay));
     }
 }
 

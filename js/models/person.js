@@ -3,11 +3,13 @@ export class Person {
         name,
         address,
         id,
-        email
+        email,
+        type
     ){
         this.name = name;
         this.address = address;
         this.id = id;
         this.email = email;
+        this.type = type;
     };
 }

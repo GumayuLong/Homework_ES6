@@ -1,14 +1,14 @@
-import {Person} from "./person"
+import {Person} from "./person.js"
 
 export class Student extends Person {
-    constructor(name, address, id, email, toan, ly, hoa){
-        super(name, address, id, email);
+    constructor(name, address, id, email, type, toan, ly, hoa){
+        super(name, address, id, email, type);
         this.toan = toan;
         this.ly = ly;
         this.hoa = hoa;
     }
 
     tinhdiemtrungbinh(){
-        return ((toan, ly, hoa) /3);
+        return ((parseFloat(this.toan) + parseFloat(this.ly) + parseFloat(this.hoa)) /3).toFixed(2);
     }
 }
