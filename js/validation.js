@@ -14,7 +14,7 @@ function Validation(){
     };
     
     this.typeCheck = function (idSelect, errorId, mess) {
-		var selectType = document.getElementById(idSelect);
+		let selectType = document.getElementById(idSelect);
 		if (selectType.selectedIndex !== 0) {
 			//true
 			domId(errorId).innerHTML = "";
@@ -30,7 +30,7 @@ function Validation(){
 	};  
     
     this.checkNumber = function (value, errorId, mess) {
-		var letter = "^[0-9]+$";
+		let letter = "^[0-9]+$";
 
 		if (value.match(letter)) {
 			//true
@@ -48,10 +48,10 @@ function Validation(){
 
 	// Validation nameProduct
 	this.checkProductExist = function (value, errorId, mess, list) {
-        var isExist = false;
+        let isExist = false;
     
-        for (var i = 0; i < list.length; i++) {
-            var product = list[i];
+        for (let i = 0; i < list.length; i++) {
+            let product = list[i];
             if (product.name === value) {
             isExist = true;
             break;

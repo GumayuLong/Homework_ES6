@@ -18,16 +18,24 @@ domId("btnThem").onclick = () => {
 }
 
 // ADD INPUT FOR MODAL============================================================================================
-let addInputToan = `<input type="text" id="diemToan" class="form-control input-sm" placeholder="Điểm toán">` ;
-let addInputLy = `<input type="text" id="diemLy" class="form-control input-sm" placeholder="Điểm lý">` ;
-let addInputHoa = `<input type="text" id="diemHoa" class="form-control input-sm" placeholder="Điểm hóa">` ;
+let addInputToan = `<input type="text" id="diemToan" class="form-control input-sm" placeholder="Điểm toán">
+<span class="sp-thongbao" id="tbToan"></span>` ;
+let addInputLy = `<input type="text" id="diemLy" class="form-control input-sm" placeholder="Điểm lý">
+<span class="sp-thongbao" id="tbLy"></span>` ;
+let addInputHoa = `<input type="text" id="diemHoa" class="form-control input-sm" placeholder="Điểm hóa">
+<span class="sp-thongbao" id="tbHoa"></span>` ;
 
-let addInputSoNgayLam = `<input type="text" id="soNgayLam" class="form-control input-sm" placeholder="Số ngày làm việc">` ;
-let addInputLuongMotNgay = `<input type="text" id="luongMotNgay" class="form-control input-sm" placeholder="Lương theo ngày">` ;
+let addInputSoNgayLam = `<input type="text" id="soNgayLam" class="form-control input-sm" placeholder="Số ngày làm việc">
+<span class="sp-thongbao" id="tbsoNgayLam"></span>` ;
+let addInputLuongMotNgay = `<input type="text" id="luongMotNgay" class="form-control input-sm" placeholder="Lương theo ngày">
+<span class="sp-thongbao" id="tbLuongMotNgay"></span>` ;
 
-let addInputComName = `<input type="text" id="comName" class="form-control input-sm" placeholder="Tên công ty">` ;
-let addInputHoaDon = `<input type="text" id="hoaDon" class="form-control input-sm" placeholder="Trị giá hóa đơn">` ;
-let addInputDanhGia = `<input type="text" id="danhGia" class="form-control input-sm" placeholder="Đánh giá">` ;
+let addInputComName = `<input type="text" id="comName" class="form-control input-sm" placeholder="Tên công ty">
+<span class="sp-thongbao" id="tbComName"></span>` ;
+let addInputHoaDon = `<input type="text" id="hoaDon" class="form-control input-sm" placeholder="Trị giá hóa đơn">
+<span class="sp-thongbao" id="tbHoaDon"></span>` ;
+let addInputDanhGia = `<input type="text" id="danhGia" class="form-control input-sm" placeholder="Đánh giá">
+<span class="sp-thongbao" id="tbDanhGia"></span>` ;
 
 domId("type").onchange = () => {
 	let type = domId("type").value;
@@ -53,12 +61,37 @@ const getFormValues = (isAdd) => {
 	const id = domId("ma").value;
 	const email = domId("email").value;
 	const type = domId("type").value;
+
+	let isValid = true;
+
+		// Validation name
+		isValid &= validation.checkRong(name, "tbName", "(*) Vui lòng nhập tên");
+
+		// Validation address
+		isValid &= validation.checkRong(address, "tbAddress", "(*) Vui lòng nhập địa chỉ");
+
+		// Validation id
+		isValid &= validation.checkRong(id, "tbMa", "(*) Vui lòng nhập mã người dùng");
+
+		// Validation email
+		isValid &= validation.checkRong(email, "tbEmail", "(*) Vui lòng nhập email");
+
+		// Validation type
+		isValid &= validation.typeCheck("type", "tbType", "(*) Vui lòng chọn loại người dùng");
+
 		if (type == "Học viên"){
 			const toan = domId("diemToan").value;
 			const ly = domId("diemLy").value;
 			const hoa = domId("diemHoa").value;
-			const student = new Student (name, address, id, email, type, toan, ly, hoa);
-			return student;
+
+			// Validation toan
+			isValid &= validation.checkRong(diemToan, "tbToan", "(*) Vui lòng nhập điểm toán");
+			domId("diemToan").style.display = "block";
+
+			if (isValid){
+				const student = new Student (name, address, id, email, type, toan, ly, hoa);
+				return student;
+			}
 		} 
 
 		else if (type == "Nhân viên"){
@@ -74,14 +107,8 @@ const getFormValues = (isAdd) => {
 			const customer = new Customer (name, address, id, email, type, comName, hoaDon, danhGia);
 			return customer;
 		}
-		let isValid = true;
-
-		// Validation name
-		isValid &= validation.checkRong(name, "tbName", "(*) Vui lòng nhập tên");
-
-		// Validation address
-		isValid &= validation.checkRong(address, "tbAddress", "(*) Vui lòng nhập địa chỉ");
-}
+		
+	}
 
 // THÊM NGƯỜI DÙNG =============================================================================================
 
