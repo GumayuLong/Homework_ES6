@@ -18,40 +18,64 @@ domId("btnThem").onclick = () => {
 }
 
 // ADD INPUT FOR MODAL============================================================================================
-let addInputToan = `<input type="text" id="diemToan" class="form-control input-sm" placeholder="Điểm toán">
-<span class="sp-thongbao" id="tbToan"></span>` ;
-let addInputLy = `<input type="text" id="diemLy" class="form-control input-sm" placeholder="Điểm lý">
-<span class="sp-thongbao" id="tbLy"></span>` ;
-let addInputHoa = `<input type="text" id="diemHoa" class="form-control input-sm" placeholder="Điểm hóa">
-<span class="sp-thongbao" id="tbHoa"></span>` ;
+let addInputToan = `
+	<div class="input-group">
+		<input type="text" id="diemToan" class="form-control input-sm" placeholder="Điểm toán">
+	</div>
+	<span class="sp-thongbao" id="tbToan"></span>` ;
+let addInputLy = `
+	<div class="input-group">
+		<input type="text" id="diemLy" class="form-control input-sm" placeholder="Điểm lý">
+	</div>
+	<span class="sp-thongbao" id="tbLy"></span>` ;
+let addInputHoa = `
+	<div class="input-group">
+		<input type="text" id="diemHoa" class="form-control input-sm" placeholder="Điểm hóa">
+	</div>
+	<span class="sp-thongbao" id="tbHoa"></span>` ;
 
-let addInputSoNgayLam = `<input type="text" id="soNgayLam" class="form-control input-sm" placeholder="Số ngày làm việc">
-<span class="sp-thongbao" id="tbsoNgayLam"></span>` ;
-let addInputLuongMotNgay = `<input type="text" id="luongMotNgay" class="form-control input-sm" placeholder="Lương theo ngày">
-<span class="sp-thongbao" id="tbLuongMotNgay"></span>` ;
+let addInputSoNgayLam = `
+	<div class="input-group">
+		<input type="text" id="soNgayLam" class="form-control input-sm" placeholder="Số ngày làm việc">
+	</div>
+	<span class="sp-thongbao" id="tbsoNgayLam"></span>` ;
+let addInputLuongMotNgay = `
+	<div class="input-group">
+		<input type="text" id="luongMotNgay" class="form-control input-sm" placeholder="Lương theo ngày">
+	</div>
+	<span class="sp-thongbao" id="tbLuongMotNgay"></span>` ;
 
-let addInputComName = `<input type="text" id="comName" class="form-control input-sm" placeholder="Tên công ty">
+let addInputComName = `
+<div class="input-group">
+	<input type="text" id="comName" class="form-control input-sm" placeholder="Tên công ty">
+</div>
 <span class="sp-thongbao" id="tbComName"></span>` ;
-let addInputHoaDon = `<input type="text" id="hoaDon" class="form-control input-sm" placeholder="Trị giá hóa đơn">
+let addInputHoaDon = `
+<div class="input-group">
+	<input type="text" id="hoaDon" class="form-control input-sm" placeholder="Trị giá hóa đơn">
+</div>
 <span class="sp-thongbao" id="tbHoaDon"></span>` ;
-let addInputDanhGia = `<input type="text" id="danhGia" class="form-control input-sm" placeholder="Đánh giá">
+let addInputDanhGia = `
+<div class="input-group">
+	<input type="text" id="danhGia" class="form-control input-sm" placeholder="Đánh giá">
+</div>
 <span class="sp-thongbao" id="tbDanhGia"></span>` ;
 
 domId("type").onchange = () => {
 	let type = domId("type").value;
 	if (type == "Học viên"){
-		document.getElementsByClassName("input-group")[7].innerHTML = addInputToan;
-		document.getElementsByClassName("input-group")[8].innerHTML = addInputLy;
-		document.getElementsByClassName("input-group")[9].innerHTML = addInputHoa;
+		document.getElementsByClassName("form-group")[6].innerHTML = addInputToan;
+		document.getElementsByClassName("form-group")[7].innerHTML = addInputLy;
+		document.getElementsByClassName("form-group")[8].innerHTML = addInputHoa;
 
 	} else if (type == "Nhân viên"){
-		document.getElementsByClassName("input-group")[7].innerHTML = addInputSoNgayLam;
-		document.getElementsByClassName("input-group")[8].innerHTML = addInputLuongMotNgay;
-		document.getElementsByClassName("input-group")[9].innerHTML = "";
+		document.getElementsByClassName("form-group")[6].innerHTML = addInputSoNgayLam;
+		document.getElementsByClassName("form-group")[7].innerHTML = addInputLuongMotNgay;
+		document.getElementsByClassName("form-group")[8].innerHTML = "";
 	} else if (type == "Khách hàng"){
-		document.getElementsByClassName("input-group")[7].innerHTML = addInputComName;
-		document.getElementsByClassName("input-group")[8].innerHTML = addInputHoaDon;
-		document.getElementsByClassName("input-group")[9].innerHTML = addInputDanhGia;
+		document.getElementsByClassName("form-group")[6].innerHTML = addInputComName;
+		document.getElementsByClassName("form-group")[7].innerHTML = addInputHoaDon;
+		document.getElementsByClassName("form-group")[8].innerHTML = addInputDanhGia;
 	}
 }
 
@@ -65,28 +89,39 @@ const getFormValues = (isAdd) => {
 	let isValid = true;
 
 		// Validation name
-		isValid &= validation.checkRong(name, "tbName", "(*) Vui lòng nhập tên");
+		isValid &= validation.checkRong(name, "tbName", "(*) Vui lòng nhập tên") && validation.kiemTraChuoiKiTu(name, "tbName", "(*) Vui lòng nhập ký tự là chữ");
 
 		// Validation address
 		isValid &= validation.checkRong(address, "tbAddress", "(*) Vui lòng nhập địa chỉ");
 
-		// Validation id
-		isValid &= validation.checkRong(id, "tbMa", "(*) Vui lòng nhập mã người dùng");
+		if(isAdd){
+			// Validation id
+			isValid &= validation.checkRong(id, "tbMa", "(*) Vui lòng nhập mã người dùng") && validation.kiemTraChuoiKiTuSo(id, "tbMa", "(*) Vui lòng nhập ký tự là chữ số") && validation.kiemTraMaTonTai(id, "tbMa", "(*) Mã người dùng đã tồn tại", listPerson.listPerson);
+		}
 
 		// Validation email
-		isValid &= validation.checkRong(email, "tbEmail", "(*) Vui lòng nhập email");
+		isValid &= validation.checkRong(email, "tbEmail", "(*) Vui lòng nhập email") && validation.checkPattern(
+			email,
+			"tbEmail",
+			"(*) Vui long nhap email đúng định dạng",
+			/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+		);
 
 		// Validation type
 		isValid &= validation.typeCheck("type", "tbType", "(*) Vui lòng chọn loại người dùng");
-
+		
 		if (type == "Học viên"){
+
 			const toan = domId("diemToan").value;
 			const ly = domId("diemLy").value;
 			const hoa = domId("diemHoa").value;
 
 			// Validation toan
-			isValid &= validation.checkRong(diemToan, "tbToan", "(*) Vui lòng nhập điểm toán");
-			domId("diemToan").style.display = "block";
+			isValid &= validation.checkRong(toan, "tbToan", "(*) Vui lòng nhập điểm toán") && validation.kiemTraChuoiKiTuSo(toan, "tbToan", "(*) Vui lòng nhập ký tự là chữ số") && validation.kiemTraKiTuSo(toan, "tbToan", "(*) Vui lòng nhập từ 0-10", 1, 10);
+			// Validation ly
+			isValid &= validation.checkRong(ly, "tbLy", "(*) Vui lòng nhập điểm lý") && validation.kiemTraChuoiKiTuSo(ly, "tbLy", "(*) Vui lòng nhập ký tự là chữ số") && validation.kiemTraKiTuSo(ly, "tbLy", "(*) Vui lòng nhập từ 0-10", 1, 10);
+			// Validation hoa
+			isValid &= validation.checkRong(hoa, "tbHoa", "(*) Vui lòng nhập điểm hóa") && validation.kiemTraChuoiKiTuSo(hoa, "tbHoa", "(*) Vui lòng nhập ký tự là chữ số") && validation.kiemTraKiTuSo(hoa, "tbHoa", "(*) Vui lòng nhập từ 0-10", 1, 10);
 
 			if (isValid){
 				const student = new Student (name, address, id, email, type, toan, ly, hoa);
@@ -97,15 +132,33 @@ const getFormValues = (isAdd) => {
 		else if (type == "Nhân viên"){
 			const soNgay = domId("soNgayLam").value;
 			const luongNgay = domId("luongMotNgay").value;
-			const employee = new Employee (name, address, id, email, type, soNgay, luongNgay);
-			return employee;
+
+			// Validation số ngày làm
+			isValid &= validation.checkRong(soNgay, "tbsoNgayLam", "(*) Vui lòng nhập số ngày làm") && validation.kiemTraChuoiKiTuSo(soNgay, "tbsoNgayLam", "(*) Vui lòng nhập ký tự là chữ số");
+			// Validation ly
+			isValid &= validation.checkRong(luongNgay, "tbLuongMotNgay", "(*) Vui lòng nhập số lương một ngày") && validation.kiemTraChuoiKiTuSo(luongNgay, "tbLuongMotNgay", "(*) Vui lòng nhập ký tự là chữ số");
+
+			if(isValid){
+				const employee = new Employee (name, address, id, email, type, soNgay, luongNgay);
+				return employee;
+			}
 
 		} else if (type == "Khách hàng"){
 			const comName = domId("comName").value;
 			const hoaDon = domId("hoaDon").value;
 			const danhGia = domId("danhGia").value;
-			const customer = new Customer (name, address, id, email, type, comName, hoaDon, danhGia);
-			return customer;
+
+			// Validation toan
+			isValid &= validation.checkRong(comName, "tbComName", "(*) Vui lòng nhập tên công ty") && validation.kiemTraChuoiKiTu(comName, "tbComName", "(*) Vui lòng nhập ký tự là chữ");
+			// Validation ly
+			isValid &= validation.checkRong(hoaDon, "tbHoaDon", "(*) Vui lòng nhập hóa đơn") && validation.kiemTraChuoiKiTuSo(hoaDon, "tbHoaDon", "(*) Vui lòng nhập ký tự là chữ số");
+			// Validation hoa
+			isValid &= validation.checkRong(danhGia, "tbDanhGia", "(*) Vui lòng nhập đánh giá") && validation.kiemTraChuoiKiTuSo(danhGia, "tbDanhGia", "(*) Vui lòng nhập ký tự là chữ số");
+			
+			if(isValid){
+				const customer = new Customer (name, address, id, email, type, comName, hoaDon, danhGia);
+				return customer;
+			}
 		}
 		
 	}
@@ -214,26 +267,48 @@ window.openUpdateModal = (idPerson) => {
 	domId("email").value = email;
 	domId("type").value = type;
 
+	let isValid = true;
+
+		// Validation name
+		isValid &= validation.checkRong(name, "tbName", "(*) Vui lòng nhập tên") && validation.kiemTraChuoiKiTu(name, "tbName", "(*) Vui lòng nhập ký tự là chữ");
+
+		// Validation address
+		isValid &= validation.checkRong(address, "tbAddress", "(*) Vui lòng nhập địa chỉ");
+
+		// Validation id
+		isValid &= validation.checkRong(id, "tbMa", "(*) Vui lòng nhập mã người dùng") && validation.kiemTraChuoiKiTuSo(id, "tbMa", "(*) Vui lòng nhập ký tự là chữ số");
+
+		// Validation email
+		isValid &= validation.checkRong(email, "tbEmail", "(*) Vui lòng nhập email") && validation.checkPattern(
+			email,
+			"tbEmail",
+			"(*) Vui long nhap email đúng định dạng",
+			/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+		);
+
+		// Validation type
+		isValid &= validation.typeCheck("type", "tbType", "(*) Vui lòng chọn loại người dùng");
+
 	if (type == "Học viên"){
-		document.getElementsByClassName("input-group")[7].innerHTML = addInputToan;
-		document.getElementsByClassName("input-group")[8].innerHTML = addInputLy;
-		document.getElementsByClassName("input-group")[9].innerHTML = addInputHoa;
+		document.getElementsByClassName("form-group")[6].innerHTML = addInputToan;
+		document.getElementsByClassName("form-group")[7].innerHTML = addInputLy;
+		document.getElementsByClassName("form-group")[8].innerHTML = addInputHoa;
 		domId("diemToan").value = toan;
 		domId("diemLy").value = ly;
 		domId("diemHoa").value = hoa;
 	}
 	else if (type == "Khách hàng"){
-		document.getElementsByClassName("input-group")[7].innerHTML = addInputComName;
-		document.getElementsByClassName("input-group")[8].innerHTML = addInputHoaDon;
-		document.getElementsByClassName("input-group")[9].innerHTML = addInputDanhGia;
+		document.getElementsByClassName("form-group")[6].innerHTML = addInputComName;
+		document.getElementsByClassName("form-group")[7].innerHTML = addInputHoaDon;
+		document.getElementsByClassName("form-group")[8].innerHTML = addInputDanhGia;
 		domId("comName").value = comName;
 		domId("hoaDon").value = hoaDon;
 		domId("danhGia").value = danhGia;
 	}
 	else if (type == "Nhân viên"){
-		document.getElementsByClassName("input-group")[7].innerHTML = addInputSoNgayLam;
-		document.getElementsByClassName("input-group")[8].innerHTML = addInputLuongMotNgay;
-		document.getElementsByClassName("input-group")[9].innerHTML = "";
+		document.getElementsByClassName("form-group")[6].innerHTML = addInputSoNgayLam;
+		document.getElementsByClassName("form-group")[7].innerHTML = addInputLuongMotNgay;
+		document.getElementsByClassName("form-group")[8].innerHTML = "";
 		domId("soNgayLam").value = soNgay;
 		domId("luongMotNgay").value = luongNgay;
 	}
@@ -242,14 +317,14 @@ window.openUpdateModal = (idPerson) => {
 }
 
 domId("btnCapNhat").onclick = () => {
-	const person = getFormValues();
-
-	listPerson.update(person);
-	saveData();
-	renderTable();
-	// console.log(listPerson);
-	close();
-	
+	const person = getFormValues(false);
+	if(person){
+		listPerson.update(person);
+		saveData();
+		renderTable();
+		// console.log(listPerson);
+		close();
+	}
 }
 
 // SẮP XẾP DANH SÁCH HIỂN THỊ THEO LOẠI NGƯỜI DÙNG =============================================================
