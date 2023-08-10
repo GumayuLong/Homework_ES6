@@ -1,24 +1,9 @@
 export class ListPerson {
     listPerson = [];
 
-    addStudent = (Student) => {
-        if (document.getElementById("type").value == "Học viên"){
-            this.listPerson = [...this.listPerson, Student];
-            // this.listPerson.push(Student);
-        }
+    add = (Person) => {
+            this.listPerson = [...this.listPerson, Person];
     }
-
-    addEmployee = (Employee) => {
-        if (document.getElementById("type").value == "Nhân viên"){
-            this.listPerson = [...this.listPerson, Employee];
-        }
-    } 
-    
-    addCustomer = (Customer) => {
-        if (document.getElementById("type").value == "Khách hàng"){
-            this.listPerson = [...this.listPerson, Customer];
-        }
-    } 
 
     delete = (id) => {
         const index = this.listPerson.findIndex((element) => {
@@ -26,4 +11,47 @@ export class ListPerson {
         });
         this.listPerson.splice(index, 1);
     }
+
+    findById(id) {
+        return this.listPerson.find((element) => {
+            return element.id === id;
+        });
+    }
+    
+    update(person) {
+        const index = this.listPerson.findIndex((element) => {
+            return element.id === person.id;
+        });
+        
+        // console.log(this.listPerson[0]);
+        this.listPerson[index] = person;
+    }
+
+    filterByType(type) {
+        const data = this.listPerson.filter((element) => {
+            if (type === "all") {
+                return true;
+            }
+    
+            return element.type === type;
+        });
+    
+        return data;
+    }
+
+    // sapXepAZ(listPerson){
+    //     listPerson.sort((a, b) => a.name.localeCompare(b.name));
+    // }
+
+    // filterByName(name) {
+    //     const data = this.listPerson.filter((element) => {
+    //         if (type === "all") {
+    //             return true;
+    //         }
+    
+    //         return element.type === type;
+    //     });
+    
+    //     return data;
+    // }
 }

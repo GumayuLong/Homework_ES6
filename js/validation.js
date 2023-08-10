@@ -1,13 +1,15 @@
+const domId = (id) => document.getElementById(id);
+
 function Validation(){
     this.checkRong = function(value, errorId, mess){
         if (value === ""){
-            getEle(errorId).innerHTML = mess;
-			getEle(errorId).style.display = "block";
+            domId(errorId).innerHTML = mess;
+			domId(errorId).style.display = "block";
             return false;
         }
 			// True
-            getEle(errorId).innerHTML = "";
-			getEle(errorId).style.display = "none";
+            domId(errorId).innerHTML = "";
+			domId(errorId).style.display = "none";
             return true;
     };
     
@@ -15,14 +17,14 @@ function Validation(){
 		var selectType = document.getElementById(idSelect);
 		if (selectType.selectedIndex !== 0) {
 			//true
-			getEle(errorId).innerHTML = "";
-			getEle(errorId).style.display = "none";
+			domId(errorId).innerHTML = "";
+			domId(errorId).style.display = "none";
 
 			return true;
 		}
 			//false
-			getEle(errorId).innerHTML = mess;
-			getEle(errorId).style.display = "block";
+			domId(errorId).innerHTML = mess;
+			domId(errorId).style.display = "block";
 
 			return false;
 	};  
@@ -32,14 +34,14 @@ function Validation(){
 
 		if (value.match(letter)) {
 			//true
-			getEle(errorId).innerHTML = "";
-			getEle(errorId).style.display = "none";
+			domId(errorId).innerHTML = "";
+			domId(errorId).style.display = "none";
 
 			return true;
 		}
 			//false
-			getEle(errorId).innerHTML = mess;
-			getEle(errorId).style.display = "block";
+			domId(errorId).innerHTML = mess;
+			domId(errorId).style.display = "block";
 
 			return false;
 	};
@@ -57,14 +59,14 @@ function Validation(){
         }
 
     if (isExist) {
-        getEle(errorId).innerHTML = mess;
-        getEle(errorId).style.display = "block";
+        domId(errorId).innerHTML = mess;
+        domId(errorId).style.display = "block";
 
         return false;
         }
 
-        getEle(errorId).innerHTML = "";
-        getEle(errorId).style.display = "none";
+        domId(errorId).innerHTML = "";
+        domId(errorId).style.display = "none";
 
         return true;
     };
@@ -72,15 +74,15 @@ function Validation(){
 	this.checkDoDaiKiTu = function (value, errorId, mess, min, max) {
         if (min <= value.trim() && value.trim() <= max) {
             //true
-            getEle(errorId).innerHTML = "";
-            getEle(errorId).style.display = "none";
+            domId(errorId).innerHTML = "";
+            domId(errorId).style.display = "none";
 
             return true;
         }
 
       //false
-        getEle(errorId).innerHTML = mess;
-        getEle(errorId).style.display = "block";
+        domId(errorId).innerHTML = mess;
+        domId(errorId).style.display = "block";
 
         return false;
     };

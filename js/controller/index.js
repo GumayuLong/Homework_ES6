@@ -5,18 +5,18 @@ import { ListPerson } from "../models/listPerson.js";
 
 const listPerson = new ListPerson();
 const domId = (id) => document.getElementById(id);
+let validation = new Validation();
 
-// BTN ADD ========================================================
+// BTN ADD =====================================================================================================
 domId("btnThem").onclick = () => {
-domId("header-title").innerHTML = "Thêm người dùng";
-// let addButton =
-// `<button id="btnThemNguoiDung" type="button" class="btn btn-success">Thêm</button>
-// <button id="btnDong" type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
-// `;
-// document.getElementsByClassName("modal-footer")[0].innerHTML = addButton;
+	domId("header-title").innerHTML = "Thêm người dùng";
+	domId("btnCapNhat").style.display = "none";
+	domId("btnThemNguoiDung").style.display = "block";
+	resetInput();
+	domId("ma").disabled = false;
 }
 
-// ADD INPUT FOR MODAL
+// ADD INPUT FOR MODAL============================================================================================
 let addInputToan = `<input type="text" id="diemToan" class="form-control input-sm" placeholder="Điểm toán">` ;
 let addInputLy = `<input type="text" id="diemLy" class="form-control input-sm" placeholder="Điểm lý">` ;
 let addInputHoa = `<input type="text" id="diemHoa" class="form-control input-sm" placeholder="Điểm hóa">` ;
@@ -31,23 +31,22 @@ let addInputDanhGia = `<input type="text" id="danhGia" class="form-control input
 domId("type").onchange = () => {
 	let type = domId("type").value;
 	if (type == "Học viên"){
-		document.getElementsByClassName("input-group")[6].innerHTML = addInputToan;
-		document.getElementsByClassName("input-group")[7].innerHTML = addInputLy;
-		document.getElementsByClassName("input-group")[8].innerHTML = addInputHoa;
+		document.getElementsByClassName("input-group")[7].innerHTML = addInputToan;
+		document.getElementsByClassName("input-group")[8].innerHTML = addInputLy;
+		document.getElementsByClassName("input-group")[9].innerHTML = addInputHoa;
 
 	} else if (type == "Nhân viên"){
-		document.getElementsByClassName("input-group")[6].innerHTML = addInputSoNgayLam;
-		document.getElementsByClassName("input-group")[7].innerHTML = addInputLuongMotNgay;
-		document.getElementsByClassName("input-group")[8].innerHTML = "";
+		document.getElementsByClassName("input-group")[7].innerHTML = addInputSoNgayLam;
+		document.getElementsByClassName("input-group")[8].innerHTML = addInputLuongMotNgay;
+		document.getElementsByClassName("input-group")[9].innerHTML = "";
 	} else if (type == "Khách hàng"){
-		document.getElementsByClassName("input-group")[6].innerHTML = addInputComName;
-		document.getElementsByClassName("input-group")[7].innerHTML = addInputHoaDon;
-		document.getElementsByClassName("input-group")[8].innerHTML = addInputDanhGia;
+		document.getElementsByClassName("input-group")[7].innerHTML = addInputComName;
+		document.getElementsByClassName("input-group")[8].innerHTML = addInputHoaDon;
+		document.getElementsByClassName("input-group")[9].innerHTML = addInputDanhGia;
 	}
 }
 
-
-domId("btnThemNguoiDung").onclick =  () => {
+const getFormValues = (isAdd) => {
 	const name = domId("name").value;
 	const address = domId("address").value;
 	const id = domId("ma").value;
@@ -58,65 +57,98 @@ domId("btnThemNguoiDung").onclick =  () => {
 			const ly = domId("diemLy").value;
 			const hoa = domId("diemHoa").value;
 			const student = new Student (name, address, id, email, type, toan, ly, hoa);
-			listPerson.addStudent(student);
-			// console.log(student);
+			return student;
 		} 
+
 		else if (type == "Nhân viên"){
-			const soNgayLam = domId("soNgayLam").value;
-			const luongMotNgay = domId("luongMotNgay").value;
-			const employee = new Employee (name, address, id, email, type, soNgayLam, luongMotNgay);
-			listPerson.addEmployee(employee);
-			// console.log(employee)
+			const soNgay = domId("soNgayLam").value;
+			const luongNgay = domId("luongMotNgay").value;
+			const employee = new Employee (name, address, id, email, type, soNgay, luongNgay);
+			return employee;
 
 		} else if (type == "Khách hàng"){
 			const comName = domId("comName").value;
 			const hoaDon = domId("hoaDon").value;
 			const danhGia = domId("danhGia").value;
 			const customer = new Customer (name, address, id, email, type, comName, hoaDon, danhGia);
-			listPerson.addCustomer(customer);
-			// console.log(customer);
+			return customer;
 		}
-		// setLocalStorage();
+		let isValid = true;
+
+		// Validation name
+		isValid &= validation.checkRong(name, "tbName", "(*) Vui lòng nhập tên");
+
+		// Validation address
+		isValid &= validation.checkRong(address, "tbAddress", "(*) Vui lòng nhập địa chỉ");
+}
+
+// THÊM NGƯỜI DÙNG =============================================================================================
+
+domId("btnThemNguoiDung").onclick =  () => {
+	const person = getFormValues(true);
+	if (person){
+		listPerson.add(person);
+		setLocalStorage();
 		renderTable();
 		resetInput();
 		close();
+	}
 };
 
-const renderTable = () => {
-	const content = listPerson.listPerson.reduce((total, element) => {
-		if (element.type == "Học viên"){
+const renderTable = (data = listPerson.listPerson) => {
+	const content = data.reduce((total, element) => {
+		const {name, address, id, email, type, toan, ly, hoa} = element;
+		if (type == "Học viên"){
+			const student = new Student (name, address, id, email, type, toan, ly, hoa);
 			total += `
 			<tr>
-				<td>${element.name}</td>
-				<td>${element.address}</td>
-				<td>${element.id}</td>
-				<td>${element.email}</td>
-				<td>${element.type}</td>
-				<td>${element.tinhdiemtrungbinh()}đ</td>
+				<td>${name}</td>
+				<td>${address}</td>
+				<td>${id}</td>
+				<td>${email}</td>
+				<td>${type}</td>
+				<td>${student.tinhdiemtrungbinh()}đ</td>
 				<td></td>
 				<td>
-					<button class="btn btn-primary" >SỬA</button>
-					<button onclick="deletePerson('${
-					element.id
-					}')" class="btn btn-danger" >XÓA</button>
+					<button class="btn btn-primary" onclick="openUpdateModal('${id}')" data-toggle="modal" data-target="#myModal">SỬA</button>
+					<button onclick="deletePerson('${id}')" class="btn btn-danger" >XÓA</button>
 				</td>
 			</tr>
 		`
 		}
-		else if (element.type == "Nhân viên"){
+		else if (type == "Nhân viên"){
+			const {name, address, id, email, type, soNgay, luongNgay} = element;
+			const employee = new Employee (name, address, id, email, type, soNgay, luongNgay);
 			total += `
 			<tr>
-				<td>${element.name}</td>
-				<td>${element.address}</td>
-				<td>${element.id}</td>
-				<td>${element.email}</td>
-				<td>${element.type}</td>
+				<td>${name}</td>
+				<td>${address}</td>
+				<td>${id}</td>
+				<td>${email}</td>
+				<td>${type}</td>
 				<td></td>
-				<td>${element.tinhLuong()}VNĐ</td>
+				<td>${employee.tinhluong()}VNĐ</td>
 				<td>
-					<button class="btn btn-primary" >SỬA</button>
+					<button class="btn btn-primary" onclick="openUpdateModal('${id}')" data-toggle="modal" data-target="#myModal">SỬA</button>
+					<button onclick="deletePerson('${id}')" class="btn btn-danger" >XÓA</button>
+				</td>
+			</tr>
+		`
+		}
+		else if (type == "Khách hàng"){
+			total += `
+			<tr>
+				<td>${name}</td>
+				<td>${address}</td>
+				<td>${id}</td>
+				<td>${email}</td>
+				<td>${type}</td>
+				<td></td>
+				<td></td>
+				<td>
+					<button class="btn btn-primary" onclick="openUpdateModal('${id}')" data-toggle="modal" data-target="#myModal">SỬA</button>
 					<button onclick="deletePerson('${
-					element.id
+						id
 					}')" class="btn btn-danger" >XÓA</button>
 				</td>
 			</tr>
@@ -127,11 +159,92 @@ const renderTable = () => {
 	}, "");
 	
 	domId("tableDanhSach").innerHTML = content;
+	// console.log(listPerson);
 }
+
+// XÓA NGƯỜI DÙNG THEO ID ======================================================================================
 
 window.deletePerson = (id) => {
 	listPerson.delete(id);
-	// setLocalStorage();
+	setLocalStorage();
+	saveData();
+}
+
+// CẬP NHẬT DANH SÁCH NGƯỜI DÙNG ===============================================================================
+
+window.openUpdateModal = (idPerson) => {
+	domId("header-title").innerHTML = "Sửa người dùng";
+	domId("btnThemNguoiDung").style.display = "none";
+	domId("btnCapNhat").style.display = "block";
+	const person = listPerson.findById(idPerson);
+	const {name, address, id, email, type, toan, ly, hoa, soNgay, luongNgay, comName, hoaDon, danhGia} = person;
+
+	domId("name").value = name;
+	domId("address").value = address;
+	domId("ma").value = id;
+	domId("ma").disabled = true;
+	domId("email").value = email;
+	domId("type").value = type;
+
+	if (type == "Học viên"){
+		document.getElementsByClassName("input-group")[7].innerHTML = addInputToan;
+		document.getElementsByClassName("input-group")[8].innerHTML = addInputLy;
+		document.getElementsByClassName("input-group")[9].innerHTML = addInputHoa;
+		domId("diemToan").value = toan;
+		domId("diemLy").value = ly;
+		domId("diemHoa").value = hoa;
+	}
+	else if (type == "Khách hàng"){
+		document.getElementsByClassName("input-group")[7].innerHTML = addInputComName;
+		document.getElementsByClassName("input-group")[8].innerHTML = addInputHoaDon;
+		document.getElementsByClassName("input-group")[9].innerHTML = addInputDanhGia;
+		domId("comName").value = comName;
+		domId("hoaDon").value = hoaDon;
+		domId("danhGia").value = danhGia;
+	}
+	else if (type == "Nhân viên"){
+		document.getElementsByClassName("input-group")[7].innerHTML = addInputSoNgayLam;
+		document.getElementsByClassName("input-group")[8].innerHTML = addInputLuongMotNgay;
+		document.getElementsByClassName("input-group")[9].innerHTML = "";
+		domId("soNgayLam").value = soNgay;
+		domId("luongMotNgay").value = luongNgay;
+	}
+	
+	// console.log(person)
+}
+
+domId("btnCapNhat").onclick = () => {
+	const person = getFormValues();
+
+	listPerson.update(person);
+	saveData();
+	renderTable();
+	// console.log(listPerson);
+	close();
+	
+}
+
+// SẮP XẾP DANH SÁCH HIỂN THỊ THEO LOẠI NGƯỜI DÙNG =============================================================
+
+domId("sapXepLoai").onchange = () => {
+	const type = domId("sapXepLoai").value;
+
+	const data = listPerson.filterByType(type);
+
+	console.log(data);
+
+	renderTable(data);
+}
+
+// domId("az").onclick = () => {
+// 	// const data = listPerson.sapXepAZ(listPerson);
+// 	// renderTable(data);
+// }
+
+// LƯU DATA TRÊN LOCALSTORAGE ==================================================================================
+
+const saveData = () => {
+	setLocalStorage();
 	renderTable();
 }
 
@@ -149,11 +262,12 @@ const getLocalStorage = () => {
 	}
 };
 
-// window.onload = () => {
-// 	// running
-// 	getLocalStorage();
-// 	renderTable();
-// };
+window.onload = () => {
+	// running
+	// student.tinhdiemtrungbinh();
+	getLocalStorage();
+	renderTable();
+};
 
 // RESET INPUT AND CLOSE POPUP==========================================================
 
@@ -162,14 +276,30 @@ const resetInput = () => {
 	domId("address").value = "";
 	domId("ma").value = "";
 	domId("email").value = "";
-	domId("type").value = "";
 
-	domId("diemToan").value = "";
-	domId("diemToan").style.display = "none";
-	domId("diemLy").value = "";
-	domId("diemLy").style.display = "none";
-	domId("diemHoa").value = "";
-	domId("diemHoa").style.display = "none"
+	if (domId("type").value == "Học viên"){
+		domId("diemToan").value = "";
+		domId("diemToan").style.display = "none";
+		domId("diemLy").value = "";
+		domId("diemLy").style.display = "none";
+		domId("diemHoa").value = "";
+		domId("diemHoa").style.display = "none"
+	}
+	else if (domId("type").value == "Nhân viên"){
+		domId("soNgayLam").value = "";
+		domId("soNgayLam").style.display = "none";
+		domId("luongMotNgay").value = "";
+		domId("luongMotNgay").style.display = "none";
+	}
+	else if (domId("type").value == "Khách hàng"){
+		domId("comName").value = "";
+		domId("comName").style.display = "none";
+		domId("hoaDon").value = "";
+		domId("hoaDon").style.display = "none";
+		domId("danhGia").value = "";
+		domId("danhGia").style.display = "none"
+	}
+	domId("type").value = "";
 }
 
 const close = () => {

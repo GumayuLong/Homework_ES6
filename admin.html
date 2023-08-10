@@ -111,21 +111,36 @@
 					<!-- Header -->
 					<div class="card-header myCardHeader">
 						<div class="row">
-							<div class="col-md-4">
+							<div class="col-md-3">
 								<h3 class="text-left font-weight-bold" style="color: #85ce36;">Danh sách người dùng</h3>
 							</div>
-							<div class="col-md-4">
+							<div class="col-md-3">
 								<div class="dropdown">
 									<button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
 										Sắp xếp theo tên
 									</button>
 									<div class="dropdown-menu">
-										<a class="dropdown-item" onclick="sapXepBeLon()" href="#">A -> Z	<i class="fa-solid fa-arrow-up"></i></a>
-										<a class="dropdown-item" onclick="sapXepLonBe()" href="#">Z -> A	<i class="fa-solid fa-arrow-down"></i></a>
+										<a class="dropdown-item" id="az" href="#">A -> Z	<i class="fa-solid fa-arrow-up"></i></a>
+										<a class="dropdown-item" id="za" href="#">Z -> A	<i class="fa-solid fa-arrow-down"></i></a>
 									</div>
 								</div>
 							</div>
-							<div class="col-md-4 text-right">
+							<div class="col-md-3 text-right">
+								<div class="form-group">
+									<div class="input-group">
+										<select class="form-control" id="sapXepLoai">
+											<option value="">-Sắp xếp loại người dùng-</option>
+											<option value="all">Tất cả</option>
+											<option value="Học viên">Học viên</option>
+											<option value="Nhân viên">Nhân viên</option>
+											<option value="Khách hàng">Khách hàng</option>
+										</select>
+									</div>
+		
+									<span class="sp-thongbao" id="tbType"></span>
+								</div>
+							</div>
+							<div class="col-md-3 text-right">
 								<button class="btn btn-success" id="btnThem" data-toggle="modal"
 									data-target="#myModal"><i class="fa-solid fa-plus"></i> Thêm người dùng</button>
 							</div>
@@ -252,24 +267,24 @@
 
 						<div class="form-group">
 							<div class="input-group">
-								<input type="text" id="cameratruoc" style="display: none;" class="form-control input-sm"
-									placeholder="">
+								<!-- <input type="text" id="cameratruoc" style="display: none;" class="form-control input-sm"
+									placeholder=""> -->
 							</div>
 							<span class="sp-thongbao" id="tbFrontCamera"></span>
 						</div>
 						
 						<div class="form-group">
 							<div class="input-group">
-								<input type="text" id="HinhSP" style="display: none;" class="form-control input-sm"
-									placeholder="">
+								<!-- <input type="text" id="HinhSP" style="display: none;" class="form-control input-sm"
+									placeholder=""> -->
 							</div>
 							<span class="sp-thongbao" id="tbImg"></span>
 						</div>
 
 						<div class="form-group">
 							<div class="input-group">
-								<input type="text" id="MoTa" style="display: none;" class="form-control input-sm"
-									placeholder="">
+								<!-- <input type="text" id="MoTa" style="display: none;" class="form-control input-sm"
+									placeholder=""> -->
 							</div>
 							<span class="sp-thongbao" id="tbDesc"></span>
 						</div>
@@ -280,6 +295,7 @@
 				<!-- Modal footer -->
 				<div class="modal-footer" id="modal-footer">
 					<button id="btnThemNguoiDung" type="button" class="btn btn-success">Thêm</button>
+					<button id="btnCapNhat" type="button" class="btn btn-warning">Sửa</button>
 					<button id="btnDong" type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
 				</div>
 
@@ -320,7 +336,7 @@
 		crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 	<!-- <script src="./js/models/product-admin.js"></script> -->
-	<!-- <script src="./js/validation.js"></script> -->
+	<script src="./js/validation.js"></script>
 	<script type="module" src="./js/controller/index.js"></script>
 </body>
 

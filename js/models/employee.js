@@ -6,7 +6,7 @@ export class Employee extends Person {
         this.soNgay = soNgay;
         this.luongNgay = luongNgay;
     }
-    tinhLuong () {
+    tinhluong() {
         return (parseFloat(this.soNgay) * parseFloat(this.luongNgay));
     }
 }
