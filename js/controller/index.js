@@ -13,6 +13,7 @@ domId("btnThem").onclick = () => {
 	domId("btnCapNhat").style.display = "none";
 	domId("btnThemNguoiDung").style.display = "block";
 	resetInput();
+	resetThongBao();
 	domId("ma").disabled = false;
 }
 
@@ -304,4 +305,12 @@ const resetInput = () => {
 
 const close = () => {
 	domId("btnDong").click();
+}
+
+const resetThongBao = () => {
+	domId("tbName").style.display = "none";
+	domId("tbAddress").style.display = "none";
+	domId("tbMa").style.display = "none";
+	domId("tbEmail").style.display = "none";
+	domId("tbType").style.display = "none";
 }
