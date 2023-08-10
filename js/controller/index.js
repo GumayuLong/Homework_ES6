@@ -339,10 +339,38 @@ domId("sapXepLoai").onchange = () => {
 	renderTable(data);
 }
 
-// domId("az").onclick = () => {
-// 	// const data = listPerson.sapXepAZ(listPerson);
-// 	// renderTable(data);
-// }
+// SẮP XẾP DANH SÁCH HIỂN THỊ THEO THỨ TỰ CHỮ CÁI ĐẦU TRONG HỌ TÊN ==========================================================================
+// SẮP XẾP THEO THỨ TỰ TỪ A->Z
+domId("az").onclick = () => {
+	let person = listPerson.listPerson;
+	// console.log(person);
+	listPerson.listPerson.sort((a, b) => {
+		// console.log(a.name, b.name);
+        if (a.name.toLowerCase() < b.name.toLowerCase()) {return -1;}
+        if (a.name.toLowerCase() > b.name.toLowerCase()) {return 1;}
+        return 0;
+    });
+	// console.log(person)
+	renderTable(person);
+}
+
+// SẮP XẾP THEO THỨ TỰ TỪ Z->A
+domId("za").onclick = () => {
+	let person = listPerson.listPerson;
+	// console.log(person);
+	listPerson.listPerson.sort((a, b) => {
+		// console.log(a.name, b.name);
+        if (a.name.toLowerCase() > b.name.toLowerCase()) {
+			return -1;
+		}
+        if (a.name.toLowerCase() < b.name.toLowerCase()) {
+			return 1;
+		}
+        return 0;
+    });
+	// console.log(person)
+	renderTable(person);
+}
 
 // LƯU DATA TRÊN LOCALSTORAGE ==================================================================================
 
